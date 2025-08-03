@@ -348,23 +348,26 @@ void main() {
             .execute('DELETE FROM contacts WHERE user_id = ?', [userId]);
 
         final contact1 = testContact.copyWith(
-            id: 'c1',
-            firstName: 'John',
-            lastName: 'Smith',
-            email: 'john.smith@test.com',
-            company: 'Smith Corp',);
+          id: 'c1',
+          firstName: 'John',
+          lastName: 'Smith',
+          email: 'john.smith@test.com',
+          company: 'Smith Corp',
+        );
         final contact2 = testContact.copyWith(
-            id: 'c2',
-            firstName: 'Jane',
-            lastName: 'Adams',
-            email: 'jane.adams@test.com',
-            company: 'Adams LLC',);
+          id: 'c2',
+          firstName: 'Jane',
+          lastName: 'Adams',
+          email: 'jane.adams@test.com',
+          company: 'Adams LLC',
+        );
         final contact3 = testContact.copyWith(
-            id: 'c3',
-            firstName: 'Bob',
-            lastName: 'Wilson',
-            email: 'bob.wilson@test.com',
-            company: 'Wilson Inc',);
+          id: 'c3',
+          firstName: 'Bob',
+          lastName: 'Wilson',
+          email: 'bob.wilson@test.com',
+          company: 'Wilson Inc',
+        );
 
         databaseService
           ..createContact(contact1)
