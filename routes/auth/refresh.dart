@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dart_frog/dart_frog.dart';
+import 'package:my_project/di/service_locator.dart';
 import 'package:my_project/models/auth_request.dart';
 import 'package:my_project/services/auth_service.dart';
 import 'package:my_project/utils/validation.dart';
@@ -27,7 +28,8 @@ Future<Response> onRequest(RequestContext context) async {
     }
 
     final refreshTokenRequest = RefreshTokenRequest.fromJson(data);
-    final authResponse = await AuthService().refreshToken(refreshTokenRequest);
+    final authService = serviceLocator<AuthService>();
+    final authResponse = await authService.refreshToken(refreshTokenRequest);
 
     return Response.json(
       body: {

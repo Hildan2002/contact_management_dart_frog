@@ -10,7 +10,7 @@ void main() {
   setUpAll(() async {
     databaseService = DatabaseService();
     await databaseService.initialize(path: ':memory:');
-    authService = AuthService();
+    authService = AuthService(databaseService);
   });
 
   tearDownAll(() {

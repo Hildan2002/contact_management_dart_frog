@@ -10,14 +10,10 @@ import 'package:uuid/uuid.dart';
 
 /// Service class for handling authentication operations.
 class AuthService {
-  /// Factory constructor that returns the singleton instance.
-  factory AuthService() => _instance ??= AuthService._();
+  /// Creates an AuthService with the provided database service.
+  AuthService(this._databaseService);
 
-  /// Private constructor for singleton pattern.
-  AuthService._();
-
-  static AuthService? _instance;
-
+  final DatabaseService _databaseService;
   final _uuid = const Uuid();
 
   /// Hashes a password using bcrypt.
@@ -68,7 +64,7 @@ class AuthService {
 
   /// Registers a new user and returns authentication response.
   Future<AuthResponse> register(RegisterRequest request) async {
-    final db = DatabaseService();
+    final db = _databaseService;
 
     final existingUser = db.getUserByEmail(request.email);
     if (existingUser != null) {
@@ -108,7 +104,7 @@ class AuthService {
 
   /// Authenticates a user login and returns authentication response.
   Future<AuthResponse> login(LoginRequest request) async {
-    final db = DatabaseService();
+    final db = _databaseService;
 
     final user = db.getUserByEmail(request.email);
     if (user == null) {
@@ -143,12 +139,12 @@ class AuthService {
     final userId = verifyToken(token);
     if (userId == null) return null;
 
-    return DatabaseService().getUserById(userId);
+    return _databaseService.getUserById(userId);
   }
 
   /// Refreshes an access token using a refresh token.
   Future<AuthResponse> refreshToken(RefreshTokenRequest request) async {
-    final db = DatabaseService();
+    final db = _databaseService;
 
     final refreshTokenData = db.getRefreshToken(request.refreshToken);
     if (refreshTokenData == null) {
@@ -185,7 +181,7 @@ class AuthService {
     String userId,
     UpdatePasswordRequest request,
   ) async {
-    final db = DatabaseService();
+    final db = _databaseService;
 
     final user = db.getUserById(userId);
     if (user == null) {
@@ -204,7 +200,7 @@ class AuthService {
 
   /// Initiates forgot password process.
   Future<void> forgotPassword(ForgotPasswordRequest request) async {
-    final db = DatabaseService();
+    final db = _databaseService;
 
     final user = db.getUserByEmail(request.email);
     if (user == null) {
@@ -224,7 +220,7 @@ class AuthService {
 
   /// Resets password using reset token.
   Future<void> resetPassword(ResetPasswordRequest request) async {
-    final db = DatabaseService();
+    final db = _databaseService;
 
     final resetTokenData = db.getPasswordResetToken(request.token);
     if (resetTokenData == null) {

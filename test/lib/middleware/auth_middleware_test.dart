@@ -1,4 +1,5 @@
 import 'package:dart_frog/dart_frog.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:my_project/middleware/auth_middleware.dart';
 import 'package:my_project/models/auth_request.dart';
@@ -27,11 +28,16 @@ void main() {
 
     databaseService = DatabaseService();
     await databaseService.initialize(path: ':memory:');
-    authService = AuthService();
+    authService = AuthService(databaseService);
+    
+    // Setup GetIt for testing
+    GetIt.instance.registerSingleton<DatabaseService>(databaseService);
+    GetIt.instance.registerSingleton<AuthService>(authService);
   });
 
   tearDownAll(() {
     databaseService.close();
+    GetIt.instance.reset();
   });
 
   group('AuthMiddleware', () {

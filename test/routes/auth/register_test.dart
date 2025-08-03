@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:dart_frog/dart_frog.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:my_project/services/auth_service.dart';
 import 'package:my_project/services/database_service.dart';
 import 'package:test/test.dart';
 
@@ -13,14 +15,21 @@ class _MockRequest extends Mock implements Request {}
 
 void main() {
   late DatabaseService databaseService;
+  late AuthService authService;
 
   setUpAll(() async {
     databaseService = DatabaseService();
     await databaseService.initialize(path: ':memory:');
+    authService = AuthService(databaseService);
+    
+    // Setup GetIt for testing
+    GetIt.instance.registerSingleton<DatabaseService>(databaseService);
+    GetIt.instance.registerSingleton<AuthService>(authService);
   });
 
   tearDownAll(() {
     databaseService.close();
+    GetIt.instance.reset();
   });
 
   group('POST /auth/register', () {

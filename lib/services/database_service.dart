@@ -5,13 +5,8 @@ import 'package:sqlite3/sqlite3.dart';
 
 /// Service class for handling SQLite database operations.
 class DatabaseService {
-  /// Factory constructor that returns the singleton instance.
-  factory DatabaseService() => _instance ??= DatabaseService._();
-
-  /// Private constructor for singleton pattern.
-  DatabaseService._();
-
-  static DatabaseService? _instance;
+  /// Creates a new DatabaseService instance.
+  DatabaseService();
 
   Database? _database;
 

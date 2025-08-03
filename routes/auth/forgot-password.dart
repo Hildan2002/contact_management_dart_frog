@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dart_frog/dart_frog.dart';
+import 'package:my_project/di/service_locator.dart';
 import 'package:my_project/models/auth_request.dart';
 import 'package:my_project/services/auth_service.dart';
 import 'package:my_project/utils/validation.dart';
@@ -21,7 +22,8 @@ Future<Response> onRequest(RequestContext context) async {
     Validator.validateForgotPasswordData(data);
 
     final forgotPasswordRequest = ForgotPasswordRequest.fromJson(data);
-    await AuthService().forgotPassword(forgotPasswordRequest);
+    final authService = serviceLocator<AuthService>();
+    await authService.forgotPassword(forgotPasswordRequest);
 
     return Response.json(
       body: {

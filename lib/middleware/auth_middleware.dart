@@ -1,4 +1,5 @@
 import 'package:dart_frog/dart_frog.dart';
+import 'package:my_project/di/service_locator.dart';
 import 'package:my_project/models/user.dart';
 import 'package:my_project/services/auth_service.dart';
 
@@ -17,7 +18,8 @@ Middleware authMiddleware() {
       }
 
       final token = authHeader.substring(7);
-      final user = AuthService().getCurrentUser(token);
+      final authService = serviceLocator<AuthService>();
+      final user = authService.getCurrentUser(token);
 
       if (user == null) {
         return Response.json(
@@ -42,7 +44,8 @@ Middleware optionalAuthMiddleware() {
       User? user;
       if (authHeader != null && authHeader.startsWith('Bearer ')) {
         final token = authHeader.substring(7);
-        user = AuthService().getCurrentUser(token);
+        final authService = serviceLocator<AuthService>();
+        user = authService.getCurrentUser(token);
       }
 
       final updatedContext = user != null

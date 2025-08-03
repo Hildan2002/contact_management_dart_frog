@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dart_frog/dart_frog.dart';
+import 'package:my_project/di/service_locator.dart';
 import 'package:my_project/models/user.dart';
 import 'package:my_project/services/database_service.dart';
 import 'package:my_project/utils/validation.dart';
@@ -33,7 +34,7 @@ Future<Response> _getContact(
   String id,
 ) async {
   try {
-    final db = DatabaseService();
+    final db = serviceLocator<DatabaseService>();
     final contact = db.getContactById(id, user.id);
 
     if (contact == null) {
@@ -64,7 +65,7 @@ Future<Response> _updateContact(
     final body = await request.body();
     final data = jsonDecode(body) as Map<String, dynamic>;
 
-    final db = DatabaseService();
+    final db = serviceLocator<DatabaseService>();
     final existingContact = db.getContactById(id, user.id);
 
     if (existingContact == null) {
@@ -111,7 +112,7 @@ Future<Response> _deleteContact(
   String id,
 ) async {
   try {
-    final db = DatabaseService();
+    final db = serviceLocator<DatabaseService>();
     final deleted = db.deleteContact(id, user.id);
 
     if (!deleted) {

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dart_frog/dart_frog.dart';
+import 'package:my_project/di/service_locator.dart';
 import 'package:my_project/models/contact.dart';
 import 'package:my_project/models/user.dart';
 import 'package:my_project/services/database_service.dart';
@@ -60,7 +61,7 @@ Future<Response> _getContacts(RequestContext context, User user) async {
       }
     }
 
-    final db = DatabaseService();
+    final db = serviceLocator<DatabaseService>();
     List<Contact> contacts;
 
     if (searchQuery != null && searchQuery.isNotEmpty) {
@@ -108,7 +109,7 @@ Future<Response> _createContact(RequestContext context, User user) async {
       updatedAt: now,
     );
 
-    DatabaseService().createContact(contact);
+    serviceLocator<DatabaseService>().createContact(contact);
 
     return Response.json(
       statusCode: 201,
