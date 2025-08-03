@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Stress Test untuk Contact Management API (Dart Frog)
 ====================================================
